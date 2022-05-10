@@ -1,0 +1,30 @@
+.sideBar {
+  display: inline-block;
+  height: 100vh;
+  min-width: 190px;
+  background-color: #212529;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 19px 16px 0 16px;
+}
+
+.item {
+  a {
+    display: block;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 9px 17px 9px 38px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s ease-out;
+
+    &:hover {
+      background-color: #0d6efd;
+    }
+  }
+}
