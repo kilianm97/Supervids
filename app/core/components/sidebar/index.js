@@ -7,7 +7,7 @@ export default function SideBar() {
     <div className={styles.sideBar}>
       <ul className={styles.list}>
         <li className={styles.item}>
-          <Link href={Routes.jobsList()}>Jobs</Link>
+          <Link href={Routes.JobsList()}>Jobs</Link>
         </li>
       </ul>
     </div>

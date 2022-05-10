@@ -65,4 +65,4 @@ export default function JobsList() {
   )
 }
 
-jobsList.getLayout = (page) => <DashBoardLayout title="jobsList">{page}</DashBoardLayout>
+JobsList.getLayout = (page) => <DashBoardLayout title="JobsList">{page}</DashBoardLayout>
