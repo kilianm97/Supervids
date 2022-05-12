@@ -1,11 +1,11 @@
-import { BlitzPage, usePaginatedQuery, useRouterQuery, useRouter, Routes, Router } from "blitz"
+import { useRouter } from "blitz"
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
 import { Container, Row, Col, Button, Stack } from "react-bootstrap"
 
-import JobRow from "../core/components/jobrow"
+import JobRow from "../../core/components/jobrow"
 
-export default function JobsList() {
+export default function Jobs() {
   const [jobs, setJobs] = useState([])
   const [splittedJobs, setSplittedJobs] = useState([])
 
@@ -89,7 +89,7 @@ export default function JobsList() {
                 ? router.query.page >= splittedJobs.length
                   ? "disabled"
                   : null
-                : null
+                : "disabled"
             }
           >
             Next
@@ -101,7 +101,7 @@ export default function JobsList() {
                 ? router.query.page >= splittedJobs.length
                   ? "disabled"
                   : null
-                : null
+                : "disabled"
             }
           >
             Last
@@ -124,4 +124,4 @@ export default function JobsList() {
   )
 }
 
-JobsList.getLayout = (page) => <DashBoardLayout title="JobsList">{page}</DashBoardLayout>
+Jobs.getLayout = (page) => <DashBoardLayout title="Jobs">{page}</DashBoardLayout>
