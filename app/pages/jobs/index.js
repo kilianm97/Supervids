@@ -89,7 +89,7 @@ export default function Jobs() {
                 ? router.query.page >= splittedJobs.length
                   ? "disabled"
                   : null
-                : "disabled"
+                : ""
             }
           >
             Next
@@ -101,7 +101,7 @@ export default function Jobs() {
                 ? router.query.page >= splittedJobs.length
                   ? "disabled"
                   : null
-                : "disabled"
+                : ""
             }
           >
             Last
