@@ -43,7 +43,13 @@ export default function JobUID() {
     <>
       <Container fluid>
         {isNotFinished(formattedState, job) && formattedState == "failed" ? (
-          <button onClick={retryJob(job)}>Retry</button>
+          <button
+            onClick={() => {
+              retryJob(job)
+            }}
+          >
+            Retry
+          </button>
         ) : null}
         <Table responsive>
           <tbody>

@@ -31,7 +31,13 @@ export default function JobRow({ job }) {
       <Col className="col-1">{calcDuration(job, formattedState)}</Col>
       <Col className="col-1">
         {isNotFinished(formattedState, job) && formattedState == "failed" ? (
-          <button onClick={retryJob(job)}>Retry</button>
+          <button
+            onClick={() => {
+              retryJob(job)
+            }}
+          >
+            Retry
+          </button>
         ) : null}
         <Link href={`/jobs/${job.uid}`}>View</Link>
       </Col>
