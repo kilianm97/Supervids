@@ -46,16 +46,7 @@ export default function JobRow(data) {
       <Col>{new Date(data.job.updatedAt).toUTCString()}</Col>
       <Col className="col-1">{calcDuration()}</Col>
       <Col className="col-1">
-        {data.job.events.map((event) => {
-          if (event.value != "done") return
-          let dateDiff =
-            (new Date(event.time).getTime() - new Date(data.job.createdAt).getTime()) / 1000
-          let mins = (dateDiff % 3600) / 60
-          return mins.toFixed(2)
-        })}
-      </Col>
-      <Col className="col-1">
-        <a href="">details</a>
+        <Link href={`/jobs/${data.job.uid}`}>View</Link>
       </Col>
     </Row>
   )
