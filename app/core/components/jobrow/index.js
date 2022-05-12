@@ -26,8 +26,8 @@ export default function JobRow({ job }) {
           {formattedState}
         </Badge>
       </Col>
-      <Col>{new Date(job.createdAt).toUTCString()}</Col>
-      <Col>{new Date(job.updatedAt).toUTCString()}</Col>
+      <Col>{new Date(job.createdAt).toLocaleString()}</Col>
+      <Col>{new Date(job.updatedAt).toLocaleString()}</Col>
       <Col className="col-1">{calcDuration(job, formattedState)}</Col>
       <Col className="col-1">
         {isNotFinished(formattedState, job) && formattedState == "failed" ? (

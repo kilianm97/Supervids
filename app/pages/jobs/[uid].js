@@ -61,11 +61,11 @@ export default function JobUID() {
             </tr>
             <tr>
               <td>Created at</td>
-              <td>{new Date(job?.createdAt).toUTCString()}</td>
+              <td>{new Date(job?.createdAt).toLocaleString()}</td>
             </tr>
             <tr>
               <td>Updated at</td>
-              <td>{new Date(job?.updatedAt).toUTCString()}</td>
+              <td>{new Date(job?.updatedAt).toLocaleString()}</td>
             </tr>
             <tr>
               <td>Duration</td>
@@ -94,7 +94,7 @@ export default function JobUID() {
               <td>
                 {isNotFinished(formattedState, job)
                   ? "-"
-                  : new Date(job?.events?.[0]?.time).toUTCString()}
+                  : new Date(job?.events?.[0]?.time).toLocaleString()}
               </td>
             </tr>
             <tr>
@@ -102,7 +102,7 @@ export default function JobUID() {
               <td>
                 {isNotFinished(formattedState, job)
                   ? "-"
-                  : new Date(job?.events?.[1]?.time).toUTCString()}
+                  : new Date(job?.events?.[1]?.time).toLocaleString()}
               </td>
             </tr>
             <tr>
@@ -110,7 +110,7 @@ export default function JobUID() {
               <td>
                 {isNotFinished(formattedState, job)
                   ? "-"
-                  : new Date(job?.events?.[2]?.time).toUTCString()}
+                  : new Date(job?.events?.[2]?.time).toLocaleString()}
               </td>
             </tr>
             <tr>
@@ -118,7 +118,7 @@ export default function JobUID() {
               <td>
                 {isNotFinished(formattedState, job)
                   ? "-"
-                  : new Date(job?.events?.[3]?.time).toUTCString()}
+                  : new Date(job?.events?.[3]?.time).toLocaleString()}
               </td>
             </tr>
             <tr>
@@ -126,7 +126,7 @@ export default function JobUID() {
               <td>
                 {isNotFinished(formattedState, job)
                   ? "-"
-                  : new Date(job?.events?.[4]?.time).toUTCString()}
+                  : new Date(job?.events?.[4]?.time).toLocaleString()}
               </td>
             </tr>
           </tbody>
