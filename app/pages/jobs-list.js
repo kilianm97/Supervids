@@ -1,20 +1,41 @@
 import { BlitzPage, usePaginatedQuery, useRouterQuery, useRouter, Routes, Router } from "blitz"
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Button, Stack } from "react-bootstrap"
 
 import JobRow from "../core/components/jobrow"
 
 export default function JobsList() {
   const [jobs, setJobs] = useState([])
+  const [splittedJobs, setSplittedJobs] = useState([])
 
   const router = useRouter()
 
   useEffect(() => {
-    if (router.asPath !== Router.route) {
-      fetchJobs()
+    fetchJobs()
+  }, [])
+
+  useEffect(() => {
+    pagination()
+  }, [splittedJobs, router.query.page])
+
+  function pagination() {
+    if (splittedJobs.length > 0) {
+      if (router.asPath == router.route || router?.query?.page <= 1) {
+        setJobs(splittedJobs[0])
+      } else {
+        if (router?.query?.page > splittedJobs.length) return
+        setJobs(splittedJobs[router.query.page - 1])
+      }
     }
-  }, [router])
+  }
+
+  function splitJobs(jobs) {
+    const chunkSize = 10
+    for (let i = 0; i < jobs.length; i += chunkSize) {
+      setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.slice(i, i + chunkSize)])
+    }
+  }
 
   const fetchJobs = () => {
     fetch(`${process.env.BLITZ_PUBLIC_API_URL}api/v1/jobs`, {
@@ -26,11 +47,7 @@ export default function JobsList() {
     })
       .then((res) => res.json())
       .then((jobs) => {
-        if (!router.query.page || router.query.page <= 1) {
-          setJobs(jobs.reverse().slice(0, 10))
-        } else {
-          setJobs(jobs.reverse().slice(router.query.page * 10 - 10, router.query.page * 10))
-        }
+        splitJobs(jobs.reverse())
       })
   }
 
@@ -48,6 +65,48 @@ export default function JobsList() {
         {jobs.map((job) => {
           return <JobRow key={job.uid} job={job} />
         })}
+        <Stack direction="horizontal" gap={3} className="justify-content-center mt-3">
+          <Button
+            href={router.pathname}
+            disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
+          >
+            First
+          </Button>
+          <Button
+            href={router.pathname + "/?page=" + (parseInt(router.query.page) - 1)}
+            disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
+          >
+            Previous
+          </Button>
+          <Button
+            href={
+              router.pathname +
+              "/?page=" +
+              (router.query.page ? parseInt(router.query.page) + 1 : 2)
+            }
+            disabled={
+              router.query.page
+                ? router.query.page >= splittedJobs.length
+                  ? "disabled"
+                  : null
+                : null
+            }
+          >
+            Next
+          </Button>
+          <Button
+            href={router.pathname + "/?page=" + splittedJobs.length}
+            disabled={
+              router.query.page
+                ? router.query.page >= splittedJobs.length
+                  ? "disabled"
+                  : null
+                : null
+            }
+          >
+            Last
+          </Button>
+        </Stack>
       </Container>
 
       <style jsx global>{`
