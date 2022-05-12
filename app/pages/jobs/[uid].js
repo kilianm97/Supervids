@@ -3,6 +3,11 @@ import { useParam } from "blitz"
 import { useEffect, useState } from "react"
 import { Container, Table, Badge } from "react-bootstrap"
 
+import calcDuration from "app/methods/calcDuration"
+import isNotFinished from "app/methods/isNotFinished"
+import formatState from "app/methods/formatState"
+import getStatusColor from "app/methods/getStatusColor"
+
 export default function JobUID() {
   const [job, setJob] = useState([])
   const [formattedState, setFormattedState] = useState()
@@ -16,7 +21,7 @@ export default function JobUID() {
   }, [uid])
 
   useEffect(() => {
-    formatState()
+    setFormattedState(formatState(job))
   }, [job])
 
   const fetchJob = () => {
@@ -33,62 +38,6 @@ export default function JobUID() {
       })
   }
 
-  const calcDuration = () => {
-    const dateDiff = isNotFinished()
-      ? (Date.now() - new Date(job?.createdAt).getTime()) / 1000
-      : (new Date(job?.events?.[4]?.time).getTime() - new Date(job?.createdAt).getTime()) / 1000
-    const mins = (dateDiff % 3600) / 60
-    return mins.toFixed(2)
-  }
-
-  const formatState = () => {
-    if (job.state == "render:dorender") {
-      if (Math.abs(Date.now() - new Date(job?.createdAt).getTime()) / 1000 / 60 > 10) {
-        setFormattedState("failed")
-      } else {
-        setFormattedState("processing")
-      }
-    }
-
-    if (job.state == "queued") {
-      setFormattedState("queued")
-    }
-
-    if (job.state == "started") {
-      setFormattedState("picked")
-    }
-
-    if (job.state == "finished") {
-      setFormattedState("finished")
-    }
-  }
-
-  const getStatusColor = () => {
-    switch (formattedState) {
-      case "picked":
-        return "info"
-        break
-      case "queued":
-        return "secondary"
-        break
-      case "processing":
-        return "warning"
-        break
-      case "failed":
-        return "danger"
-        break
-      case "finished":
-        return "success"
-        break
-    }
-  }
-
-  const isNotFinished = () => {
-    if (typeof formattedState != "undefined") {
-      return typeof job.events == "undefined" ? true : false
-    }
-  }
-
   return (
     <>
       <Container fluid>
@@ -101,7 +50,7 @@ export default function JobUID() {
             <tr>
               <td>State</td>
               <td>
-                <Badge pill bg={getStatusColor()}>
+                <Badge pill bg={getStatusColor(formattedState)}>
                   {formattedState}
                 </Badge>
               </td>
@@ -116,7 +65,7 @@ export default function JobUID() {
             </tr>
             <tr>
               <td>Duration</td>
-              <td>{calcDuration()}</td>
+              <td>{calcDuration(job, formattedState)}</td>
             </tr>
             <tr>
               <td>Assets</td>
@@ -138,23 +87,43 @@ export default function JobUID() {
             </tr>
             <tr>
               <td>Rendered at</td>
-              <td>{isNotFinished() ? "-" : new Date(job?.events?.[0]?.time).toUTCString()}</td>
+              <td>
+                {isNotFinished(formattedState, job)
+                  ? "-"
+                  : new Date(job?.events?.[0]?.time).toUTCString()}
+              </td>
             </tr>
             <tr>
               <td>Encoded at</td>
-              <td>{isNotFinished() ? "-" : new Date(job?.events?.[1]?.time).toUTCString()}</td>
+              <td>
+                {isNotFinished(formattedState, job)
+                  ? "-"
+                  : new Date(job?.events?.[1]?.time).toUTCString()}
+              </td>
             </tr>
             <tr>
               <td>Uploaded at</td>
-              <td>{isNotFinished() ? "-" : new Date(job?.events?.[2]?.time).toUTCString()}</td>
+              <td>
+                {isNotFinished(formattedState, job)
+                  ? "-"
+                  : new Date(job?.events?.[2]?.time).toUTCString()}
+              </td>
             </tr>
             <tr>
               <td>Processed at</td>
-              <td>{isNotFinished() ? "-" : new Date(job?.events?.[3]?.time).toUTCString()}</td>
+              <td>
+                {isNotFinished(formattedState, job)
+                  ? "-"
+                  : new Date(job?.events?.[3]?.time).toUTCString()}
+              </td>
             </tr>
             <tr>
               <td>Done at</td>
-              <td>{isNotFinished() ? "-" : new Date(job?.events?.[4]?.time).toUTCString()}</td>
+              <td>
+                {isNotFinished(formattedState, job)
+                  ? "-"
+                  : new Date(job?.events?.[4]?.time).toUTCString()}
+              </td>
             </tr>
           </tbody>
         </Table>
