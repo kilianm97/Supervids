@@ -25,6 +25,15 @@ export default function JobRow(data) {
     }
   }
 
+  const calcDuration = () => {
+    const dateDiff =
+      (new Date(data?.job?.events?.[4]?.time).getTime() -
+        new Date(data?.job?.createdAt).getTime()) /
+      1000
+    const mins = (dateDiff % 3600) / 60
+    return mins.toFixed(2)
+  }
+
   return (
     <Row>
       <Col className={clsx(styles.cell, "col-2")}>{data.job.uid}</Col>
@@ -35,6 +44,7 @@ export default function JobRow(data) {
       </Col>
       <Col>{new Date(data.job.createdAt).toUTCString()}</Col>
       <Col>{new Date(data.job.updatedAt).toUTCString()}</Col>
+      <Col className="col-1">{calcDuration()}</Col>
       <Col className="col-1">
         {data.job.events.map((event) => {
           if (event.value != "done") return
