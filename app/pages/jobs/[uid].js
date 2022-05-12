@@ -34,7 +34,7 @@ export default function JobUID() {
   }
 
   const calcDuration = () => {
-    const dateDiff = isFailed()
+    const dateDiff = isNotFinished()
       ? (Date.now() - new Date(job?.createdAt).getTime()) / 1000
       : (new Date(job?.events?.[4]?.time).getTime() - new Date(job?.createdAt).getTime()) / 1000
     const mins = (dateDiff % 3600) / 60
@@ -62,7 +62,7 @@ export default function JobUID() {
   const getStatusColor = () => {
     switch (formattedState) {
       case "picked":
-        return "light"
+        return "info"
         break
       case "queued":
         return "secondary"
@@ -79,9 +79,9 @@ export default function JobUID() {
     }
   }
 
-  const isFailed = () => {
+  const isNotFinished = () => {
     if (typeof formattedState != "undefined") {
-      return formattedState == "failed" ? true : false
+      return typeof job.events == "undefined" ? true : false
     }
   }
 
@@ -97,7 +97,7 @@ export default function JobUID() {
             <tr>
               <td>State</td>
               <td>
-                <Badge pill bg={getStatusColor()} text={formattedState == "picked" ? "dark" : null}>
+                <Badge pill bg={getStatusColor()}>
                   {formattedState}
                 </Badge>
               </td>
@@ -134,23 +134,23 @@ export default function JobUID() {
             </tr>
             <tr>
               <td>Rendered at</td>
-              <td>{isFailed() ? "-" : new Date(job?.events?.[0]?.time).toUTCString()}</td>
+              <td>{isNotFinished() ? "-" : new Date(job?.events?.[0]?.time).toUTCString()}</td>
             </tr>
             <tr>
               <td>Encoded at</td>
-              <td>{isFailed() ? "-" : new Date(job?.events?.[1]?.time).toUTCString()}</td>
+              <td>{isNotFinished() ? "-" : new Date(job?.events?.[1]?.time).toUTCString()}</td>
             </tr>
             <tr>
               <td>Uploaded at</td>
-              <td>{isFailed() ? "-" : new Date(job?.events?.[2]?.time).toUTCString()}</td>
+              <td>{isNotFinished() ? "-" : new Date(job?.events?.[2]?.time).toUTCString()}</td>
             </tr>
             <tr>
               <td>Processed at</td>
-              <td>{isFailed() ? "-" : new Date(job?.events?.[3]?.time).toUTCString()}</td>
+              <td>{isNotFinished() ? "-" : new Date(job?.events?.[3]?.time).toUTCString()}</td>
             </tr>
             <tr>
               <td>Done at</td>
-              <td>{isFailed() ? "-" : new Date(job?.events?.[4]?.time).toUTCString()}</td>
+              <td>{isNotFinished() ? "-" : new Date(job?.events?.[4]?.time).toUTCString()}</td>
             </tr>
           </tbody>
         </Table>
