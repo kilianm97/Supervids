@@ -50,6 +50,10 @@ export default function JobUID() {
       }
     }
 
+    if (job.state == "queued") {
+      setFormattedState("queued")
+    }
+
     if (job.state == "started") {
       setFormattedState("picked")
     }
