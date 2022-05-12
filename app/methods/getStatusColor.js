@@ -12,6 +12,9 @@ export default function getStatusColor(formattedState) {
     case "failed":
       return "danger"
       break
+    case "error":
+      return "danger"
+      break
     case "finished":
       return "success"
       break
