@@ -7,6 +7,7 @@ import calcDuration from "app/methods/calcDuration"
 import isNotFinished from "app/methods/isNotFinished"
 import formatState from "app/methods/formatState"
 import getStatusColor from "app/methods/getStatusColor"
+import retryJob from "app/methods/retryJob"
 
 export default function JobUID() {
   const [job, setJob] = useState([])
@@ -41,6 +42,9 @@ export default function JobUID() {
   return (
     <>
       <Container fluid>
+        {isNotFinished(formattedState, job) && formattedState == "failed" ? (
+          <button onClick={retryJob(job)}>Retry</button>
+        ) : null}
         <Table responsive>
           <tbody>
             <tr>
