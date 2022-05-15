@@ -3,7 +3,7 @@ import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
 import { Container, Row, Col, Button, Stack } from "react-bootstrap"
 
-import JobRow from "../../core/components/jobrow"
+import JobRow from "../../core/components/job-row"
 import Pagination from "app/core/components/pagination"
 
 export default function Jobs() {
