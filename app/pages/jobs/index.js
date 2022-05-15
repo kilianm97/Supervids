@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Container, Row, Col, Button, Stack } from "react-bootstrap"
 
 import JobRow from "../../core/components/jobrow"
+import Pagination from "app/core/components/pagination"
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([])
@@ -65,48 +66,7 @@ export default function Jobs() {
         {jobs.map((job) => {
           return <JobRow key={job.uid} job={job} />
         })}
-        <Stack direction="horizontal" gap={3} className="justify-content-center mt-3">
-          <Button
-            href={router.pathname}
-            disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
-          >
-            First
-          </Button>
-          <Button
-            href={router.pathname + "/?page=" + (parseInt(router.query.page) - 1)}
-            disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
-          >
-            Previous
-          </Button>
-          <Button
-            href={
-              router.pathname +
-              "/?page=" +
-              (router.query.page ? parseInt(router.query.page) + 1 : 2)
-            }
-            disabled={
-              router.query.page
-                ? router.query.page >= splittedJobs.length
-                  ? "disabled"
-                  : null
-                : ""
-            }
-          >
-            Next
-          </Button>
-          <Button
-            href={router.pathname + "/?page=" + splittedJobs.length}
-            disabled={
-              router.query.page
-                ? router.query.page >= splittedJobs.length
-                  ? "disabled"
-                  : null
-                : ""
-            }
-          >
-            Last
-          </Button>
-        </Stack>
+        <Pagination max={splittedJobs.length}></Pagination>
       </Container>
 
       <style jsx global>{`
