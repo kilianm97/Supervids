@@ -5,7 +5,6 @@ export default function calcDuration(job, formattedState) {
     ? Date.now() - new Date(job?.updatedAt).getTime()
     : new Date(job?.events?.[4]?.time).getTime() - new Date(job?.createdAt).getTime()
 
-  console.log(dateDiff / 1000)
   let seconds = Math.floor(dateDiff / 1000)
   let minutes = Math.floor(seconds / 60)
   let hours = Math.floor(minutes / 60)
