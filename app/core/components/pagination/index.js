@@ -28,13 +28,29 @@ export default function Pagination({ max }) {
         href={
           router.pathname + "/?page=" + (router.query.page ? parseInt(router.query.page) + 1 : 2)
         }
-        disabled={router.query.page ? (router.query.page >= max ? "disabled" : null) : ""}
+        disabled={
+          router.query.page
+            ? router.query.page >= max
+              ? "disabled"
+              : null
+            : max == 1
+            ? "disabled"
+            : ""
+        }
       >
         Next
       </Button>
       <Button
         href={router.pathname + "/?page=" + max}
-        disabled={router.query.page ? (router.query.page >= max ? "disabled" : null) : ""}
+        disabled={
+          router.query.page
+            ? router.query.page >= max
+              ? "disabled"
+              : null
+            : max == 1
+            ? "disabled"
+            : ""
+        }
       >
         Last
       </Button>
