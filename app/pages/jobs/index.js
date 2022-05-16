@@ -1,4 +1,4 @@
-import { useRouter } from "blitz"
+import { recursiveFormatZodErrors, useRouter } from "blitz"
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
 import { Container, Row, Col } from "react-bootstrap"
@@ -48,6 +48,14 @@ export default function Jobs() {
       let stateFilter = jobs?.filter((job) => {
         if (router?.query?.state == "all") {
           return true
+        }
+        if (router.query.state == "failed") {
+          if (
+            job.state == "render:dorender" &&
+            Math.abs(Date.now() - new Date(job?.updatedAt).getTime()) / 1000 / 60 > 10
+          ) {
+            return true
+          }
         }
         if (router.query.state == job.state) {
           return true
@@ -114,6 +122,7 @@ export default function Jobs() {
               })
             : ""
       }
+      console.log(stateFilter)
 
       if (createdAtFilter.length < 1 && updatedAtFilter.length < 1 && durationFilter.length < 1) {
         splitJobs(stateFilter)
