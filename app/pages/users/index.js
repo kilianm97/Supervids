@@ -28,7 +28,7 @@ export default function Users() {
   return (
     <>
       <Container fluid>
-        <Row>
+        <Row className="text-center">
           <Col className="col__head">Email</Col>
           <Col className="col__head">Created At</Col>
           <Col className="col__head">Last login</Col>

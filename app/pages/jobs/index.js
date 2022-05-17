@@ -122,7 +122,6 @@ export default function Jobs() {
               })
             : ""
       }
-      console.log(stateFilter)
 
       if (createdAtFilter.length < 1 && updatedAtFilter.length < 1 && durationFilter.length < 1) {
         splitJobs(stateFilter)
@@ -203,9 +202,9 @@ export default function Jobs() {
     <>
       <Container fluid>
         <JobFilter filterJob={filterJob} jobs={jobs}></JobFilter>
-        <Row>
+        <Row className="text-center">
           <Col className="col__head col-2">Uid</Col>
-          <Col className="col__head col-1">State</Col>
+          <Col className="col__head col-2">State</Col>
           <Col className="col__head">CreatedAt</Col>
           <Col className="col__head">UpdatedAt</Col>
           <Col className="col__head col-1">Duration</Col>
