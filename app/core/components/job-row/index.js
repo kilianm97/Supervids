@@ -20,7 +20,7 @@ export default function JobRow({ job }) {
 
   return (
     <Row>
-      <Col className={clsx(styles.cell, "col-2")}>{job.uid}</Col>
+      <Col className={clsx(styles.cellId, "col-2")}>{job.uid}</Col>
       <Col className="col-1">
         <Badge pill bg={getStatusColor(formattedState)}>
           {formattedState}
