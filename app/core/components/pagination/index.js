@@ -16,7 +16,10 @@ export default function Pagination({ max }) {
         First
       </Button>
       <Button
-        href={router.pathname + "/?page=" + (parseInt(router.query.page) - 1)}
+        onClick={() => {
+          router.query.page = parseInt(router.query.page) - 1
+          router.push(router)
+        }}
         disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
       >
         Previous
@@ -25,9 +28,10 @@ export default function Pagination({ max }) {
         Page {router.query.page ? parseInt(router.query.page) : 1} / {max}
       </p>
       <Button
-        href={
-          router.pathname + "/?page=" + (router.query.page ? parseInt(router.query.page) + 1 : 2)
-        }
+        onClick={() => {
+          router.query.page = router.query.page ? parseInt(router.query.page) + 1 : 2
+          router.push(router)
+        }}
         disabled={
           router.query.page
             ? router.query.page >= max
@@ -41,7 +45,10 @@ export default function Pagination({ max }) {
         Next
       </Button>
       <Button
-        href={router.pathname + "/?page=" + max}
+        onClick={() => {
+          router.query.page = max
+          router.push(router)
+        }}
         disabled={
           router.query.page
             ? router.query.page >= max
