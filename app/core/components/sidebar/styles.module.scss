@@ -16,8 +16,13 @@
   font-size: 16px;
   line-height: 20px;
   padding: 9px 17px 9px 38px;
+  margin-top: 9px;
   border-radius: 4px;
   transition: background-color 0.2s ease-out;
+
+  &:first-child {
+    margin-top: 0;
+  }
 
   &:hover,
   &.active {
