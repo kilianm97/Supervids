@@ -10,7 +10,10 @@ export default function Pagination({ max }) {
       className="justify-content-center align-items-baseline mt-3"
     >
       <Button
-        href={router.pathname}
+        onClick={() => {
+          router.query.page = 1
+          router.push(router)
+        }}
         disabled={router.query.page ? (router.query.page <= 1 ? "disabled" : null) : "disabled"}
       >
         First
