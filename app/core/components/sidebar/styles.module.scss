@@ -15,7 +15,6 @@
 .item {
   font-size: 16px;
   line-height: 20px;
-  padding: 9px 17px 9px 38px;
   margin-top: 9px;
   border-radius: 4px;
   transition: background-color 0.2s ease-out;
@@ -33,5 +32,6 @@
     display: block;
     color: #ffffff;
     text-decoration: none;
+    padding: 9px 17px 9px 38px;
   }
 }
