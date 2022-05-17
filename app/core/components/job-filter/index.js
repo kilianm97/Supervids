@@ -20,6 +20,7 @@ export default function JobFilter({ filterJob, jobs }) {
       router.query.duration = event.target.duration.value
     }
 
+    router.query.page = 1
     router.push(router)
     filterJob(jobs)
   }
