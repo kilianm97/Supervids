@@ -222,7 +222,7 @@ export default function Users() {
                 <Modal.Title>Confirm user removal</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                Are you sure you want to remove <b>{selectedUser.email}</b>?
+                Are you sure you want to remove <b>{selectedUser?.email}</b>?
                 <input type="hidden" value={selectedUser?.id} />
               </Modal.Body>
               <Modal.Footer>
