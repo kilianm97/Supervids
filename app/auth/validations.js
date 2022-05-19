@@ -19,6 +19,17 @@ export const Signup = z
     message: "Passwords don't match",
     path: ["passwordConfirmation"], // set the path of the error
   })
+export const EditUser = z
+  .object({
+    email,
+    currentPassword: z.string(),
+    newPassword: password,
+    passwordConfirmation,
+  })
+  .refine((data) => data.newPassword === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ["passwordConfirmation"], // set the path of the error
+  })
 export const Login = z.object({
   email,
   password: z.string(),
@@ -38,5 +49,5 @@ export const ResetPassword = z
   })
 export const ChangePassword = z.object({
   currentPassword: z.string(),
-  newPassword: password,
+  c: password,
 })

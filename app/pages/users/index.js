@@ -8,23 +8,33 @@ import { useRouter, useMutation } from "blitz"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import signup from "app/auth/mutations/signup"
-import { Signup } from "app/auth/validations"
+import edituser from "app/auth/mutations/editUser"
+import { Signup, EditUser } from "app/auth/validations"
 
 export default function Users() {
   const [signupMutation] = useMutation(signup)
+  const [editMutation] = useMutation(edituser)
 
-  const [show, setShow] = useState(false)
+  const [showSignup, setShowSignup] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
+  const [selectedUser, setSelectedUser] = useState()
 
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const handleCloseSignUp = () => setShowSignup(false)
+  const handleShowSignUp = () => setShowSignup(true)
 
-  const AllUsers = () => {
+  const handleCloseEdit = () => setShowEdit(false)
+  const handleShowEdit = (user) => {
+    setShowEdit(true)
+    setSelectedUser(user)
+  }
+
+  const AllUsers = ({ handleShowEdit }) => {
     const allUsers = useAllUsers()
     if (!allUsers) return
     return (
       <>
         {allUsers?.map((user) => {
-          return <UserRow key={user.id} user={user} />
+          return <UserRow key={user.id} user={user} handleShowEdit={handleShowEdit} />
         })}
       </>
     )
@@ -33,7 +43,7 @@ export default function Users() {
   return (
     <>
       <div className="d-flex flex-column w-100">
-        <Button className="mx-auto mt-2" onClick={handleShow}>
+        <Button className="mx-auto mt-2" onClick={handleShowSignUp}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -59,9 +69,9 @@ export default function Users() {
             <Col className="col__head">Action</Col>
           </Row>
           <Suspense fallback="Loading...">
-            <AllUsers />
+            <AllUsers handleShowEdit={handleShowEdit} />
           </Suspense>
-          <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+          <Modal show={showSignup} onHide={handleCloseSignUp} backdrop="static" keyboard={false}>
             <Form
               schema={Signup}
               initialValues={{
@@ -72,7 +82,7 @@ export default function Users() {
               onSubmit={async (values) => {
                 try {
                   await signupMutation(values)
-                  handleClose()
+                  handleCloseSignUp()
                 } catch (error) {
                   if (error.code === "P2002" && error.meta?.target?.includes("email")) {
                     // This error comes from Prisma
@@ -106,11 +116,72 @@ export default function Users() {
                 />
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleCloseSignUp}>
                   Close
                 </Button>
                 <Button variant="primary" type="submit">
                   Add User
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal>
+          <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
+            <Form
+              schema={EditUser}
+              initialValues={{
+                email: selectedUser?.email,
+                currentPassword: "",
+                newPassword: "",
+                passwordConfirmation: "",
+              }}
+              onSubmit={async (values) => {
+                try {
+                  await editMutation(values)
+                  handleCloseEdit()
+                } catch (error) {
+                  if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+                    // This error comes from Prisma
+                    return {
+                      email: "This email is already being used",
+                    }
+                  } else {
+                    return {
+                      [FORM_ERROR]: error.toString(),
+                    }
+                  }
+                }
+              }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Edit a user</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <LabeledTextField name="email" label="Email" disabled />
+                <LabeledTextField
+                  name="currentPassword"
+                  label="Current Password"
+                  placeholder="Current Password"
+                  type="password"
+                />
+                <LabeledTextField
+                  name="newPassword"
+                  label="New Password"
+                  placeholder="New Password"
+                  type="password"
+                />
+                <LabeledTextField
+                  name="passwordConfirmation"
+                  label="Confirm Password"
+                  placeholder="Confirmation"
+                  type="password"
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEdit}>
+                  Close
+                </Button>
+                <Button variant="primary" type="submit">
+                  Save
                 </Button>
               </Modal.Footer>
             </Form>
