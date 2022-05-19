@@ -51,3 +51,6 @@ export const ChangePassword = z.object({
   currentPassword: z.string(),
   c: password,
 })
+export const DeleteUser = z.object({
+  id: z.number(),
+})

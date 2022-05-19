@@ -9,14 +9,17 @@ import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import signup from "app/auth/mutations/signup"
 import edituser from "app/auth/mutations/editUser"
-import { Signup, EditUser } from "app/auth/validations"
+import deleteuser from "app/auth/mutations/deleteUser"
+import { Signup, EditUser, DeleteUser } from "app/auth/validations"
 
 export default function Users() {
   const [signupMutation] = useMutation(signup)
   const [editMutation] = useMutation(edituser)
+  const [deleteMutation] = useMutation(deleteuser)
 
   const [showSignup, setShowSignup] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [showDelete, setShowDelete] = useState(false)
   const [selectedUser, setSelectedUser] = useState()
 
   const handleCloseSignUp = () => setShowSignup(false)
@@ -28,13 +31,26 @@ export default function Users() {
     setSelectedUser(user)
   }
 
-  const AllUsers = ({ handleShowEdit }) => {
+  const handleCloseDelete = () => setShowDelete(false)
+  const handleShowDelete = (user) => {
+    setShowDelete(true)
+    setSelectedUser(user)
+  }
+
+  const AllUsers = ({ handleShowEdit, handleShowDelete }) => {
     const allUsers = useAllUsers()
     if (!allUsers) return
     return (
       <>
         {allUsers?.map((user) => {
-          return <UserRow key={user.id} user={user} handleShowEdit={handleShowEdit} />
+          return (
+            <UserRow
+              key={user.id}
+              user={user}
+              handleShowEdit={handleShowEdit}
+              handleShowDelete={handleShowDelete}
+            />
+          )
         })}
       </>
     )
@@ -69,7 +85,7 @@ export default function Users() {
             <Col className="col__head">Action</Col>
           </Row>
           <Suspense fallback="Loading...">
-            <AllUsers handleShowEdit={handleShowEdit} />
+            <AllUsers handleShowEdit={handleShowEdit} handleShowDelete={handleShowDelete} />
           </Suspense>
           <Modal show={showSignup} onHide={handleCloseSignUp} backdrop="static" keyboard={false}>
             <Form
@@ -181,6 +197,40 @@ export default function Users() {
                 </Button>
                 <Button variant="primary" type="submit">
                   Save
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal>
+          <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
+            <Form
+              schema={DeleteUser}
+              initialValues={{
+                id: selectedUser?.id,
+              }}
+              onSubmit={async (values) => {
+                try {
+                  handleCloseDelete()
+                  await deleteMutation(values)
+                } catch (error) {
+                  return {
+                    [FORM_ERROR]: error.toString(),
+                  }
+                }
+              }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm user removal</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Are you sure you want to remove <b>{selectedUser.email}</b>?
+                <input type="hidden" value={selectedUser?.id} />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseDelete}>
+                  Close
+                </Button>
+                <Button variant="danger" type="submit">
+                  Remove
                 </Button>
               </Modal.Footer>
             </Form>
