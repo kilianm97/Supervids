@@ -16,4 +16,6 @@ const DashBoardLayout = ({ title, children }) => {
   )
 }
 
+DashBoardLayout.authenticate = true
+
 export default DashBoardLayout
