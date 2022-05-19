@@ -5,8 +5,8 @@ import {
   AuthorizationError,
   useQueryErrorResetBoundary,
 } from "blitz"
-import LoginForm from "app/auth/components/LoginForm"
 import "bootstrap/dist/css/bootstrap.min.css"
+import LoginPage from "app/auth/pages/login"
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
 
 function RootErrorFallback({ error, resetErrorBoundary }) {
   if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />
+    return <LoginPage />
   } else if (error instanceof AuthorizationError) {
     return (
       <ErrorComponent

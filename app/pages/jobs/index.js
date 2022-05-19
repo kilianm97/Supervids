@@ -231,4 +231,6 @@ export default function Jobs() {
   )
 }
 
+Jobs.suppressFirstRenderFlicker = true
+
 Jobs.getLayout = (page) => <DashBoardLayout title="Jobs">{page}</DashBoardLayout>
