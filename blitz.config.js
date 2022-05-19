@@ -1,9 +1,20 @@
-import { sessionMiddleware, simpleRolesIsAuthorized } from "blitz";
+import { sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
 const config = {
-  middleware: [sessionMiddleware({
-    cookiePrefix: "supervids",
-    isAuthorized: simpleRolesIsAuthorized
-  })]
+  middleware: [
+    sessionMiddleware({
+      cookiePrefix: "supervids",
+      isAuthorized: simpleRolesIsAuthorized,
+    }),
+  ],
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/jobs",
+        permanent: true,
+      },
+    ]
+  },
   /* Uncomment this to customize the webpack config
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Note: we provide webpack above so you should not `require` it
@@ -12,6 +23,5 @@ const config = {
     return config
   },
   */
-
-};
-module.exports = config;
+}
+module.exports = config
