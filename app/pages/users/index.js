@@ -1,10 +1,10 @@
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { Suspense } from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Container, Row, Col, Modal, Button } from "react-bootstrap"
 import UserRow from "../../core/components/user-row"
 import { useAllUsers } from "app/core/hooks/useAllUsers"
-import { useRouter, useMutation } from "blitz"
+import { useMutation, AuthenticationError } from "blitz"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import signup from "app/auth/mutations/signup"
@@ -139,10 +139,9 @@ export default function Users() {
                   await editMutation(values)
                   handleCloseEdit()
                 } catch (error) {
-                  if (error.code === "P2002" && error.meta?.target?.includes("email")) {
-                    // This error comes from Prisma
+                  if (error instanceof AuthenticationError) {
                     return {
-                      email: "This email is already being used",
+                      currentPassword: "Password is not valid",
                     }
                   } else {
                     return {
