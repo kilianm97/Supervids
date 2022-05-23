@@ -49,6 +49,14 @@ export default function SideBar() {
         >
           <Link href={Routes.Users()}>Users</Link>
         </li>
+        <li
+          className={clsx(
+            styles.item,
+            router.pathname == Routes.Settings().pathname ? styles.active : null
+          )}
+        >
+          <Link href={Routes.Settings()}>Settings</Link>
+        </li>
       </ul>
     </div>
   )

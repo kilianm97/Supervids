@@ -54,3 +54,10 @@ export const ChangePassword = z.object({
 export const DeleteUser = z.object({
   id: z.number(),
 })
+export const Settings = z.object({
+  id: z.number(),
+  apiAddress: z.string().transform((str) => str.trim()),
+  apiKey: z.string().transform((str) => str.trim()),
+  apiSecret: z.string().transform((str) => str.trim()),
+  failureTime: z.string().transform((str) => str.trim()),
+})

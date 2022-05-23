@@ -1,5 +1,6 @@
 import { Head } from "blitz"
 import SideBar from "../components/sidebar"
+import { Suspense } from "react"
 
 const DashBoardLayout = ({ title, children }) => {
   return (
@@ -10,7 +11,7 @@ const DashBoardLayout = ({ title, children }) => {
       </Head>
       <div style={{ display: "flex" }}>
         <SideBar />
-        {children}
+        <Suspense>{children}</Suspense>
       </div>
     </>
   )
