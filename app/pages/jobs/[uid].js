@@ -29,13 +29,18 @@ export default function JobUID() {
   }, [job])
 
   const fetchJob = () => {
-    fetch(`http://${settings.apiAddress}/api/v1/jobs/${uid}`, {
-      headers: {
-        "supervid-key": settings.apiKey,
-        "supervid-secret": settings.apiSecret,
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `http://${settings.apiAddress}${
+        settings.apiPort != "-" ? ":" + settings.apiPort : ""
+      }/api/v1/jobs/${uid}`,
+      {
+        headers: {
+          "supervid-key": settings.apiKey,
+          "supervid-secret": settings.apiSecret,
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((job) => {
         setJob(job)

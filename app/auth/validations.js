@@ -40,6 +40,7 @@ export const DeleteUser = z.object({
 export const Settings = z.object({
   id: z.number(),
   apiAddress: z.string().transform((str) => str.trim()),
+  apiPort: z.string().transform((str) => str.trim()),
   apiKey: z.string().transform((str) => str.trim()),
   apiSecret: z.string().transform((str) => str.trim()),
   failureTime: z.string().transform((str) => str.trim()),

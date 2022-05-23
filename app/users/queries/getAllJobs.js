@@ -7,17 +7,23 @@ export default async function getAllJobs(_ = null, { session }) {
     select: {
       id: true,
       apiAddress: true,
+      apiPort: true,
       apiKey: true,
       apiSecret: true,
     },
   })
 
-  const jobs = await fetch(`http://${settings.apiAddress}/api/v1/jobs`, {
-    headers: {
-      "supervid-key": settings.apiKey,
-      "supervid-secret": settings.apiSecret,
-      "Content-Type": "application/json",
-    },
-  }).then((res) => res.json())
+  const jobs = await fetch(
+    `http://${settings.apiAddress}${
+      settings.apiPort != "-" ? ":" + settings.apiPort : ""
+    }/api/v1/jobs`,
+    {
+      headers: {
+        "supervid-key": settings.apiKey,
+        "supervid-secret": settings.apiSecret,
+        "Content-Type": "application/json",
+      },
+    }
+  ).then((res) => res.json())
   return jobs
 }

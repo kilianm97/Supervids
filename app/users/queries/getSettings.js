@@ -8,6 +8,7 @@ export default async function getSettings(_ = null, { session }) {
     select: {
       id: true,
       apiAddress: true,
+      apiPort: true,
       apiKey: true,
       apiSecret: true,
       failureTime: true,

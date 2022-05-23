@@ -19,6 +19,7 @@ export default function Settings() {
           initialValues={{
             id: 1,
             apiAddress: settings.apiAddress,
+            apiPort: settings.apiPort,
             apiKey: settings.apiKey,
             apiSecret: settings.apiSecret,
             failureTime: settings.failureTime,
@@ -34,6 +35,7 @@ export default function Settings() {
           }}
         >
           <LabeledTextField name="apiAddress" label="API Address" type="text" />
+          <LabeledTextField name="apiPort" label="API Port" type="text" placeholder="1234" />
           <LabeledTextField name="apiKey" label="API Key" type="text" />
           <LabeledTextField name="apiSecret" label="API Secret" type="password" />
           <LabeledTextField name="failureTime" label="Failure time" type="time" step="10" />

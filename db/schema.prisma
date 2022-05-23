@@ -62,6 +62,7 @@ model Token {
 model Settings {
   id          Int     @id @default(autoincrement())
   apiAddress  String?
+  apiPort     String? @default("-")
   apiKey      String?
   apiSecret   String?
   failureTime String?
