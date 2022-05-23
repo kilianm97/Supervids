@@ -1,4 +1,4 @@
-import { recursiveFormatZodErrors, useRouter } from "blitz"
+import { useRouter } from "blitz"
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
 import { Container, Row, Col } from "react-bootstrap"
@@ -6,20 +6,26 @@ import { Container, Row, Col } from "react-bootstrap"
 import JobRow from "../../core/components/job-row"
 import Pagination from "app/core/components/pagination"
 import JobFilter from "app/core/components/job-filter"
+
 import formatState from "app/methods/formatState"
 import calcDuration from "app/methods/calcDuration"
 
+import { useSettings } from "app/core/hooks/useSettings"
+import { useAllJobs } from "app/core/hooks/useAllJobs"
+
 export default function Jobs() {
-  const [jobs, setJobs] = useState([])
   const [formattedState, setFormattedState] = useState()
   const [splittedJobs, setSplittedJobs] = useState([])
   const [filteredJobs, setFilteredJobs] = useState([])
 
+  const settings = useSettings()
+
+  const jobsFetched = useAllJobs()
   const router = useRouter()
 
   useEffect(() => {
-    fetchJobs()
-  }, [router.query])
+    filterJob(jobsFetched)
+  }, [router.query.state, router.query.createdAt, router.query.updatedAt, router.query.duration])
 
   useEffect(() => {
     pagination()
@@ -28,13 +34,13 @@ export default function Jobs() {
   function pagination() {
     if (splittedJobs.length > 0) {
       if (typeof router.query.page == "undefined" || router?.query?.page <= 1) {
-        setJobs(splittedJobs[0])
         setFilteredJobs(splittedJobs[0])
       } else {
         if (router?.query?.page > splittedJobs.length) return
-        setJobs(splittedJobs[router.query.page - 1])
         setFilteredJobs(splittedJobs[router.query.page - 1])
       }
+    } else {
+      setFilteredJobs([])
     }
   }
 
@@ -79,6 +85,7 @@ export default function Jobs() {
                 }
               })
             : stateFilter?.filter((job) => {
+                console.log(new Date(router.query.updatedAt) < new Date(job.updatedAt))
                 if (new Date(router.query.updatedAt) < new Date(job.updatedAt)) {
                   return true
                 }
@@ -174,34 +181,21 @@ export default function Jobs() {
   }
 
   function splitJobs(jobs) {
-    const chunkSize = 10
     setSplittedJobs([])
-    for (let i = 0; i < jobs?.length; i += chunkSize) {
-      setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.slice(i, i + chunkSize)])
+    if (jobs.length < 1) {
+      setSplittedJobs([])
+    } else {
+      const chunkSize = 10
+      for (let i = 0; i < jobs?.length; i += chunkSize) {
+        setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.reverse().slice(i, i + chunkSize)])
+      }
     }
-    pagination()
-  }
-
-  const fetchJobs = () => {
-    fetch(`${process.env.BLITZ_PUBLIC_API_URL}api/v1/jobs`, {
-      headers: {
-        "supervid-key": process.env.BLITZ_PUBLIC_API_KEY,
-        "supervid-secret": process.env.BLITZ_PUBLIC_API_SECRET,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((jobs) => {
-        jobs = jobs.reverse()
-        filterJob(jobs)
-        setJobs(jobs)
-      })
   }
 
   return (
     <>
       <Container fluid>
-        <JobFilter filterJob={filterJob} jobs={jobs}></JobFilter>
+        <JobFilter filterJob={filterJob} jobs={filteredJobs}></JobFilter>
         <Row className="text-center">
           <Col className="col__head col-2">Uid</Col>
           <Col className="col__head col-2">State</Col>
@@ -219,9 +213,6 @@ export default function Jobs() {
       <style jsx global>{`
         .row {
           padding: 16px 8px;
-        }
-        .row:nth-child(even) {
-          background-color: #f8f9fa;
         }
         .col__head {
           font-weight: bold;
