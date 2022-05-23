@@ -9,11 +9,14 @@ import formatState from "app/methods/formatState"
 import getStatusColor from "app/methods/getStatusColor"
 import retryJob from "app/methods/retryJob"
 
+import { useSettings } from "app/core/hooks/useSettings"
+
 export default function JobUID() {
   const [job, setJob] = useState([])
   const [formattedState, setFormattedState] = useState()
 
   const uid = useParam("uid")
+  const settings = useSettings()
 
   useEffect(() => {
     if (typeof uid != "undefined") {
@@ -26,10 +29,10 @@ export default function JobUID() {
   }, [job])
 
   const fetchJob = () => {
-    fetch(`${process.env.BLITZ_PUBLIC_API_URL}api/v1/jobs/${uid}`, {
+    fetch(`http://${settings.apiAddress}/api/v1/jobs/${uid}`, {
       headers: {
-        "supervid-key": process.env.BLITZ_PUBLIC_API_KEY,
-        "supervid-secret": process.env.BLITZ_PUBLIC_API_SECRET,
+        "supervid-key": settings.apiKey,
+        "supervid-secret": settings.apiSecret,
         "Content-Type": "application/json",
       },
     })

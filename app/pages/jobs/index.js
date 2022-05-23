@@ -10,15 +10,12 @@ import JobFilter from "app/core/components/job-filter"
 import formatState from "app/methods/formatState"
 import calcDuration from "app/methods/calcDuration"
 
-import { useSettings } from "app/core/hooks/useSettings"
 import { useAllJobs } from "app/core/hooks/useAllJobs"
 
 export default function Jobs() {
   const [formattedState, setFormattedState] = useState()
   const [splittedJobs, setSplittedJobs] = useState([])
   const [filteredJobs, setFilteredJobs] = useState([])
-
-  const settings = useSettings()
 
   const jobsFetched = useAllJobs()
   const router = useRouter()
