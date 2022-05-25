@@ -21,7 +21,16 @@ export default function Jobs() {
   const router = useRouter()
 
   useEffect(() => {
-    filterJob(jobsFetched)
+    if (
+      router.query.state ||
+      router.query.createdAt ||
+      router.query.updatedAt ||
+      router.query.duration
+    ) {
+      filterJob(jobsFetched)
+    } else {
+      splitJobs(jobsFetched)
+    }
   }, [router.query.state, router.query.createdAt, router.query.updatedAt, router.query.duration])
 
   useEffect(() => {
@@ -82,7 +91,6 @@ export default function Jobs() {
                 }
               })
             : stateFilter?.filter((job) => {
-                console.log(new Date(router.query.updatedAt) < new Date(job.updatedAt))
                 if (new Date(router.query.updatedAt) < new Date(job.updatedAt)) {
                   return true
                 }
@@ -182,9 +190,10 @@ export default function Jobs() {
     if (jobs.length < 1) {
       setSplittedJobs([])
     } else {
-      const chunkSize = 10
+      const chunkSize = 8
+      jobs = jobs.reverse()
       for (let i = 0; i < jobs?.length; i += chunkSize) {
-        setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.reverse().slice(i, i + chunkSize)])
+        setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.slice(i, i + chunkSize)])
       }
     }
   }
