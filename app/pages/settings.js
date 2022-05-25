@@ -13,8 +13,9 @@ export default function Settings() {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="d-flex align-items-center">
         <Form
+          className="w-50 mx-auto"
           schema={SettingsValidation}
           initialValues={{
             id: 1,
