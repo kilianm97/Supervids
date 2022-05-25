@@ -1,7 +1,5 @@
 import Layout from "app/core/layouts/Layout"
 import { useRouter, Image } from "blitz"
-import { useMutation } from "blitz"
-import login from "app/auth/mutations/login"
 import { LoginForm } from "app/auth/components/LoginForm"
 
 import loginPicture from "app/assets/login-picture.jpg"
