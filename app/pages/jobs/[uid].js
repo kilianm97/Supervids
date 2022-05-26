@@ -10,42 +10,18 @@ import getStatusColor from "app/methods/getStatusColor"
 import retryJob from "app/methods/retryJob"
 
 import { useSettings } from "app/core/hooks/useSettings"
+import { useJobDetails } from "app/core/hooks/useJobDetails"
 
 export default function JobUID() {
-  const [job, setJob] = useState([])
   const [formattedState, setFormattedState] = useState()
 
   const uid = useParam("uid")
   const settings = useSettings()
-
-  useEffect(() => {
-    if (typeof uid != "undefined") {
-      fetchJob()
-    }
-  }, [uid])
+  const job = useJobDetails(uid)
 
   useEffect(() => {
     setFormattedState(formatState(job))
   }, [job])
-
-  const fetchJob = () => {
-    fetch(
-      `http://${settings.apiAddress}${
-        settings.apiPort != "-" ? ":" + settings.apiPort : ""
-      }/api/v1/jobs/${uid}`,
-      {
-        headers: {
-          "supervid-key": settings.apiKey,
-          "supervid-secret": settings.apiSecret,
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((job) => {
-        setJob(job)
-      })
-  }
 
   return (
     <>
