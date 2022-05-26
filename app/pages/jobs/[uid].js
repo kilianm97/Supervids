@@ -168,9 +168,6 @@ export default function JobUID() {
         .row {
           padding: 16px 8px;
         }
-        .row:nth-child(even) {
-          background-color: #f8f9fa;
-        }
         .col__head {
           font-weight: bold;
         }

@@ -199,7 +199,7 @@ export default function Jobs() {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="position-relative">
         <JobFilter filterJob={filterJob} jobs={jobsFetched}></JobFilter>
         <Row className="text-center">
           <Col className="col__head col-2">Uid</Col>
@@ -212,7 +212,9 @@ export default function Jobs() {
         {filteredJobs.map((job) => {
           return <JobRow key={job.uid} job={job} />
         })}
-        <Pagination max={splittedJobs.length}></Pagination>
+        <div className="position-absolute bottom-0 start-50 translate-middle">
+          <Pagination max={splittedJobs.length}></Pagination>
+        </div>
       </Container>
 
       <style jsx global>{`
