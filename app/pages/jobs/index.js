@@ -191,7 +191,6 @@ export default function Jobs() {
       setSplittedJobs([])
     } else {
       const chunkSize = 8
-      jobs = jobs.reverse()
       for (let i = 0; i < jobs?.length; i += chunkSize) {
         setSplittedJobs((splittedJobs) => [...splittedJobs, jobs.slice(i, i + chunkSize)])
       }
@@ -201,7 +200,7 @@ export default function Jobs() {
   return (
     <>
       <Container fluid>
-        <JobFilter filterJob={filterJob} jobs={filteredJobs}></JobFilter>
+        <JobFilter filterJob={filterJob} jobs={jobsFetched}></JobFilter>
         <Row className="text-center">
           <Col className="col__head col-2">Uid</Col>
           <Col className="col__head col-2">State</Col>

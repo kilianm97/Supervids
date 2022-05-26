@@ -25,5 +25,5 @@ export default async function getAllJobs(_ = null, { session }) {
       },
     }
   ).then((res) => res.json())
-  return jobs
+  return jobs.reverse()
 }
