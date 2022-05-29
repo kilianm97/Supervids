@@ -224,8 +224,8 @@ export default function Jobs() {
         <Row className="text-center">
           <Col className="col__head col-2">Uid</Col>
           <Col className="col__head col-2">State</Col>
-          <Col className="col__head">CreatedAt</Col>
-          <Col className="col__head">UpdatedAt</Col>
+          <Col className="col__head">Created At</Col>
+          <Col className="col__head">Updated At</Col>
           <Col className="col__head col-1">Duration</Col>
           <Col className="col__head col-1">Action</Col>
         </Row>
