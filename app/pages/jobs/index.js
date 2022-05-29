@@ -67,7 +67,7 @@ export default function Jobs() {
         if (router.query.state == "failed") {
           if (
             job.state == "render:dorender" &&
-            Math.abs(Date.now() - new Date(job?.updatedAt).getTime()) / 1000 / 60 > 10
+            Math.abs(Date.now() - new Date(job?.updatedAt).getTime()) > settings.failureTime
           ) {
             return true
           }
