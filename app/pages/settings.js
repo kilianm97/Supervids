@@ -6,6 +6,7 @@ import { Form, FORM_ERROR } from "app/core/components/Form"
 import settingsMut from "app/auth/mutations/settings"
 import { SettingsValidation } from "app/auth/validations"
 import { useSettings } from "app/core/hooks/useSettings"
+import moment from "moment"
 
 export default function Settings() {
   const [settingsMutation] = useMutation(settingsMut)
@@ -23,7 +24,7 @@ export default function Settings() {
             apiPort: settings.apiPort,
             apiKey: settings.apiKey,
             apiSecret: settings.apiSecret,
-            failureTime: settings.failureTime,
+            failureTime: moment.utc(settings.failureTime).format("HH:mm:ss"),
           }}
           onSubmit={async (values) => {
             try {

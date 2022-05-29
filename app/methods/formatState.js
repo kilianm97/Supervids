@@ -1,7 +1,7 @@
-export default function formatState(job) {
+export default function formatState(job, failureTime) {
   let state = ""
   if (job.state == "render:dorender") {
-    if (Math.abs(Date.now() - new Date(job?.updatedAt).getTime()) / 1000 / 60 > 10) {
+    if (Math.abs(Date.now() - new Date(job?.updatedAt).getTime()) > failureTime) {
       state = "failed"
     } else {
       state = "processing"

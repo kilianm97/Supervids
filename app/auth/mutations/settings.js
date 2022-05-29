@@ -1,5 +1,6 @@
-import { resolver, hash256 } from "blitz"
+import { resolver } from "blitz"
 import db from "db"
+import moment from "moment"
 import { Settings } from "app/auth/validations"
 
 export default resolver.pipe(
@@ -14,7 +15,7 @@ export default resolver.pipe(
         apiPort,
         apiKey,
         apiSecret: apiSecret,
-        failureTime,
+        failureTime: moment(failureTime, "HH:mm:ss").diff(moment().startOf("day"), "milliseconds"),
       },
     })
     return true

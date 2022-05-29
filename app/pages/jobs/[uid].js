@@ -20,7 +20,7 @@ export default function JobUID() {
   const job = useJobDetails(uid)
 
   useEffect(() => {
-    setFormattedState(formatState(job))
+    setFormattedState(formatState(job, settings.failureTime))
   }, [job])
 
   return (

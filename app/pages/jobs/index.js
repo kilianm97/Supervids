@@ -2,6 +2,7 @@ import { useRouter } from "blitz"
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
 import { useEffect, useState } from "react"
 import { Container, Row, Col } from "react-bootstrap"
+import moment from "moment"
 
 import JobRow from "../../core/components/job-row"
 import Pagination from "app/core/components/pagination"
@@ -11,6 +12,7 @@ import formatState from "app/methods/formatState"
 import calcDuration from "app/methods/calcDuration"
 
 import { useAllJobs } from "app/core/hooks/useAllJobs"
+import { useSettings } from "app/core/hooks/useSettings"
 
 export default function Jobs() {
   const [formattedState, setFormattedState] = useState()
@@ -18,6 +20,7 @@ export default function Jobs() {
   const [filteredJobs, setFilteredJobs] = useState([])
 
   const jobsFetched = useAllJobs()
+  const settings = useSettings()
   const router = useRouter()
 
   useEffect(() => {
@@ -101,34 +104,51 @@ export default function Jobs() {
         durationFilter =
           createdAtFilter?.length < 1 && updatedAtFilter.length < 1
             ? stateFilter?.filter((job) => {
-                setFormattedState(formatState(job))
-                const hms = calcDuration(job, formattedState)
+                const hms = calcDuration(job, formatState(job, settings.failureTime))
                 const [hours, minutes, seconds] = hms.split(":")
                 const totalSeconds = +hours * 60 * 60 + +minutes * 60 + +seconds
 
-                if (totalSeconds > router.query.duration * 60) {
+                if (
+                  totalSeconds * 1000 >
+                  moment(router.query.duration, "HH:mm:ss").diff(
+                    moment().startOf("day"),
+                    "milliseconds"
+                  )
+                ) {
                   return true
                 }
               })
             : updatedAtFilter?.length < 1
             ? createdAtFilter.filter((job) => {
-                setFormattedState(formatState(job))
-                const hms = calcDuration(job, formattedState)
+                const hms = calcDuration(job, formatState(job, settings.failureTime))
                 const [hours, minutes, seconds] = hms.split(":")
                 const totalSeconds = +hours * 60 * 60 + +minutes * 60 + +seconds
+                console.log(totalSeconds * 1000)
 
-                if (totalSeconds > router.query.duration * 60) {
+                if (
+                  totalSeconds * 1000 >
+                  moment(router.query.duration, "HH:mm:ss").diff(
+                    moment().startOf("day"),
+                    "milliseconds"
+                  )
+                ) {
                   return true
                 }
               })
             : createdAtFilter < 1
             ? updatedAtFilter.filter((job) => {
-                setFormattedState(formatState(job))
-                const hms = calcDuration(job, formattedState)
+                const hms = calcDuration(job, formatState(job, settings.failureTime))
                 const [hours, minutes, seconds] = hms.split(":")
                 const totalSeconds = +hours * 60 * 60 + +minutes * 60 + +seconds
+                console.log(totalSeconds * 1000)
 
-                if (totalSeconds > router.query.duration * 60) {
+                if (
+                  totalSeconds * 1000 >
+                  moment(router.query.duration, "HH:mm:ss").diff(
+                    moment().startOf("day"),
+                    "milliseconds"
+                  )
+                ) {
                   return true
                 }
               })

@@ -65,7 +65,7 @@ model Settings {
   apiPort     String? @default("-")
   apiKey      String?
   apiSecret   String?
-  failureTime String?
+  failureTime Int?
 }
 
 // NOTE: It's highly recommended to use an enum for the token type
