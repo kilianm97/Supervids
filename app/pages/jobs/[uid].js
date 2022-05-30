@@ -49,7 +49,7 @@ export default function JobUID() {
               variant="danger"
               className="mx-auto mt-2"
               onClick={() => {
-                retryJob(job)
+                retryJob(job, settings)
               }}
             >
               <svg

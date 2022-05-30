@@ -37,7 +37,7 @@ export default function JobRow({ job }) {
           <a
             href=""
             onClick={() => {
-              retryJob(job)
+              retryJob(job, settings)
             }}
             className="me-2 pe-auto"
           >
