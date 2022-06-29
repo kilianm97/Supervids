@@ -79,7 +79,10 @@ export default function Jobs() {
       let createdAtFilter = []
       if (typeof router.query.createdAt != "undefined") {
         createdAtFilter = stateFilter?.filter((job) => {
-          if (new Date(router.query.createdAt) < new Date(job.createdAt)) {
+          if (
+            moment(new Date(router.query.createdAt)).format("L") ==
+            moment(new Date(job.createdAt)).format("L")
+          ) {
             return true
           }
         })
@@ -89,12 +92,18 @@ export default function Jobs() {
         updatedAtFilter =
           createdAtFilter?.length > 0
             ? createdAtFilter?.filter((job) => {
-                if (new Date(router.query.updatedAt) < new Date(job.updatedAt)) {
+                if (
+                  moment(new Date(router.query.updatedAt)).format("L") ==
+                  moment(new Date(job.updatedAt)).format("L")
+                ) {
                   return true
                 }
               })
             : stateFilter?.filter((job) => {
-                if (new Date(router.query.updatedAt) < new Date(job.updatedAt)) {
+                if (
+                  moment(new Date(router.query.updatedAt)).format("L") ==
+                  moment(new Date(job.updatedAt)).format("L")
+                ) {
                   return true
                 }
               })
