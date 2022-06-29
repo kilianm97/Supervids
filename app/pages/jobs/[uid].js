@@ -1,5 +1,5 @@
 import DashBoardLayout from "app/core/layouts/DashBoardLayout"
-import { useParam } from "blitz"
+import { useParam, useMutation, Router } from "blitz"
 import { useEffect, useState } from "react"
 import { Container, Table, Row, Col, Badge, Button } from "react-bootstrap"
 
@@ -7,14 +7,14 @@ import calcDuration from "app/methods/calcDuration"
 import isNotFinished from "app/methods/isNotFinished"
 import formatState from "app/methods/formatState"
 import getStatusColor from "app/methods/getStatusColor"
-import retryJob from "app/methods/retryJob"
+import retry from "app/auth/mutations/retry"
 
 import { useSettings } from "app/core/hooks/useSettings"
 import { useJobDetails } from "app/core/hooks/useJobDetails"
 
 export default function JobUID() {
   const [formattedState, setFormattedState] = useState()
-
+  const [retryMutation] = useMutation(retry)
   const uid = useParam("uid")
   const settings = useSettings()
   const job = useJobDetails(uid)
@@ -49,7 +49,8 @@ export default function JobUID() {
               variant="danger"
               className="mx-auto mt-2"
               onClick={() => {
-                retryJob(job, settings)
+                retryMutation(job)
+                Router.reload(window.location.pathname)
               }}
             >
               <svg

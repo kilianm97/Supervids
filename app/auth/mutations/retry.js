@@ -1,6 +1,19 @@
-import { Router } from "blitz"
+import db from "db"
 
-export default function retryJob(job, settings) {
+export default async function retry(job) {
+  const settings = await db.settings.findFirst({
+    where: {
+      id: 1,
+    },
+    select: {
+      id: true,
+      apiAddress: true,
+      apiPort: true,
+      apiKey: true,
+      apiSecret: true,
+    },
+  })
+
   fetch(
     `http://${settings.apiAddress}${
       settings.apiPort != "-" ? ":" + settings.apiPort : ""
@@ -14,9 +27,5 @@ export default function retryJob(job, settings) {
       },
       body: JSON.stringify({ state: "queued" }),
     }
-  )
-    .then((res) => res.json())
-    .then(() => {
-      Router.reload(window.location.pathname)
-    })
+  ).then((res) => res.json())
 }

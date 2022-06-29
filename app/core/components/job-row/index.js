@@ -1,4 +1,4 @@
-import { Link } from "blitz"
+import { Link, useMutation } from "blitz"
 import { useEffect, useState } from "react"
 import { Row, Col, Badge } from "react-bootstrap"
 import clsx from "clsx"
@@ -9,11 +9,12 @@ import calcDuration from "app/methods/calcDuration"
 import getStatusColor from "app/methods/getStatusColor"
 import formatState from "app/methods/formatState"
 import isNotFinished from "app/methods/isNotFinished"
-import retryJob from "app/methods/retryJob"
+import retry from "app/auth/mutations/retry"
 import { useSettings } from "app/core/hooks/useSettings"
 
 export default function JobRow({ job }) {
   const [formattedState, setFormattedState] = useState()
+  const [retryMutation] = useMutation(retry)
   const settings = useSettings()
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function JobRow({ job }) {
           <a
             href=""
             onClick={() => {
-              retryJob(job, settings)
+              retryMutation(job)
             }}
             className="me-2 pe-auto"
           >
