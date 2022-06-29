@@ -1,5 +1,5 @@
 import db from "db"
-export default async function getAllJobs(input) {
+export default async function getJobDetails(input) {
   const settings = await db.settings.findFirst({
     where: {
       id: 1,
